@@ -2,8 +2,10 @@
 
 ## **Project Overview**
 
-    Modern digital environments require non-contact interaction, especially in contexts such as dynamic presentations, sterile medical settings, or public touchless kiosks. 
-    Traditional input devices like mice and keyboards are often limiting, unhygienic in shared spaces, and inefficient where spatial freedom is required.
+    Modern digital environments require non-contact interaction, especially in contexts such as dynamic presentations, 
+    sterile medical settings, or public touchless kiosks. 
+    Traditional input devices like mice and keyboards are often limiting, unhygienic in shared spaces, 
+    and inefficient where spatial freedom is required.
 
 This project implements a high-precision, real-time gesture recognition system designed to enable seamless, touchless navigation in specialized digital environments.
 
@@ -19,21 +21,22 @@ This project implements a high-precision, real-time gesture recognition system d
 
 ## **Tech Stack**
 
-    **Model:** YOLOv11 (Custom trained for specific gestures)
+    Model: YOLOv11 (Custom trained for specific gestures)
 
-    **Computer Vision:** OpenCV, MediaPipe
+    Computer Vision: OpenCV, MediaPipe
 
-    **Language:** Python
+    Language: Python
 
-    **Dataset Management:** RoboFlow
+    Dataset Management: RoboFlow
 
-    **Dashboard UI:** HTML5, Tailwind CSS, JavaScript (Canvas API)
+    Dashboard UI:HTML5, Tailwind CSS, JavaScript (Canvas API)
 
 ## **Methodology**
 
 ### **1. Dataset / Input**
 
-    The system utilizes a custom dataset obtained from RoboFlow, which was manually annotated to ensure high precision for specific navigation gestures. 
+    The system utilizes a custom dataset obtained from RoboFlow, 
+    which was manually annotated to ensure high precision for specific navigation gestures. 
     Preprocessing involves resizing, normalization, and augmentation to ensure robustness in varying lighting conditions.
 
 ### **2. Model Architecture**
@@ -63,6 +66,8 @@ This research highlights the transition from high-latency sensor-based systems (
 
     Year: 2026 (PBL - Project Based Learning)
 
-    Student: Gautam Sahu (Reg No: 2427030540)
+    Student: Gautam Sahu 
+    
+    Reg No: 2427030540
 
     Project Guide: Dr. Aditya Sinha (Assistant Professor)
