@@ -6,9 +6,7 @@ import time
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
-# -------------------------------
 # MediaPipe Setup
-# -------------------------------
 base_options = python.BaseOptions(model_asset_path="hand_landmarker.task")
 options = vision.HandLandmarkerOptions(
     base_options=base_options,
@@ -17,9 +15,7 @@ options = vision.HandLandmarkerOptions(
 
 detector = vision.HandLandmarker.create_from_options(options)
 
-# -------------------------------
 # Direction Function
-# -------------------------------
 def get_direction(wrist, index_tip):
     dx = index_tip[0] - wrist[0]
     dy = index_tip[1] - wrist[1]
@@ -29,17 +25,14 @@ def get_direction(wrist, index_tip):
     else:
         return "DOWN" if dy > 0 else "UP"
 
-# -------------------------------
+
 # Control Variables
-# -------------------------------
 cooldown = 1
 last_action_time = 0
 stable_frames = 0
 last_direction = ""
 
-# -------------------------------
 # Start Camera
-# -------------------------------
 cap = cv2.VideoCapture(0)
 
 while True:
@@ -121,4 +114,5 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
 
