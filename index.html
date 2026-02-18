@@ -75,9 +75,25 @@
             display: flex;
             opacity: 1;
         }
+
+        /* Lightbox specific animations */
+        #imageFullscreenModal img {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #imageFullscreenModal.active img {
+            transform: scale(1);
+        }
     </style>
 </head>
 <body class="selection:bg-brand-accent/30">
+
+    <!-- Full Screen Image Modal -->
+    <div id="imageFullscreenModal" onclick="closeImage()" class="modal-overlay fixed inset-0 z-[200] bg-brand-dark/95 backdrop-blur-2xl p-4 md:p-12 items-center justify-center cursor-zoom-out opacity-0 transition-all duration-300">
+        <button class="absolute top-8 right-8 text-white/50 hover:text-brand-accent transition-colors z-[210]">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <img id="fullscreenImg" src="" alt="Preview" class="max-w-full max-h-full rounded-xl shadow-2xl scale-95 transition-transform duration-500">
+    </div>
 
     <!-- Modal for Literature Review -->
     <div id="literatureModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center opacity-0">
@@ -144,10 +160,11 @@
                     </p>
                 </div>
 
+                <!-- Architectural Synergy Visual -->
                 <div class="space-y-4">
                     <h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent">Hybrid Synergy Visual</h4>
-                    <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/20">
-                        <img src="images/image_d64240.png" alt="Why YOLOv11 + MediaPipe?" class="w-full h-auto block" onerror="this.src='https://placehold.co/800x400/25343f/4f8eff?text=Hybrid+Architecture+Synergy'">
+                    <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/20 cursor-zoom-in group">
+                        <img src="assets/image_d64240.jpg" onclick="openImage(this.src)" alt="Why YOLOv11 + MediaPipe?" class="w-full h-auto block group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/800x400/25343f/4f8eff?text=Hybrid+Architecture+Synergy'">
                     </div>
                 </div>
 
@@ -166,25 +183,33 @@
                     </div>
                 </div>
 
+                <!-- Training Batches Gallery -->
                 <div class="space-y-6">
                     <h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent">Training & Detection Samples</h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40">
-                            <img src="images/train_batch0.jpg" alt="Training Batch 0" class="w-full h-auto hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+0'">
+                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40 cursor-zoom-in group">
+                            <img src="assets/train_batch0.jpg" onclick="openImage(this.src)" alt="Training Batch 0" class="w-full h-auto group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+0'">
                         </div>
-                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40">
-                            <img src="images/train_batch1.jpg" alt="Training Batch 1" class="w-full h-auto hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+1'">
+                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40 cursor-zoom-in group">
+                            <img src="assets/train_batch1.jpg" onclick="openImage(this.src)" alt="Training Batch 1" class="w-full h-auto group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+1'">
                         </div>
-                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40">
-                            <img src="images/train_batch2.jpg" alt="Training Batch 2" class="w-full h-auto hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+2'">
+                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40 cursor-zoom-in group">
+                            <img src="assets/train_batch2.jpg" onclick="openImage(this.src)" alt="Training Batch 2" class="w-full h-auto group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+2'">
                         </div>
                     </div>
+                </div>
+
+                <div class="border-t border-white/5 pt-10">
+                    <h4 class="text-xl font-bold mb-6">Network Architecture</h4>
+                    <p class="text-brand-muted text-sm leading-relaxed mb-6">
+                        The architecture utilizes 24 convolutional layers followed by 2 fully connected layers, enabling the single-pass inference required for real-time interaction.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Dataset/Input (Comprehensive Reversion) -->
+    <!-- Modal for Dataset/Input -->
     <div id="datasetModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center opacity-0">
         <div class="glass-card w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-10 md:p-16 relative glow-accent">
             <button onclick="closeModal('datasetModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
@@ -237,7 +262,7 @@
                         <ul class="text-sm text-brand-light/80 space-y-3 list-disc pl-4">
                             <li><strong>MediaPipe Integration:</strong> 21-point hand landmarking for skeletal tracking.</li>
                             <li><strong>Latency:</strong> Frame processing capped at 22ms.</li>
-                            <li><strong>Robustness:</strong> High accuracy (>94%) in cluttered environments.</li>
+                            <li><strong>Robustness:</strong> High accuracy (>95%) in cluttered environments.</li>
                         </ul>
                     </div>
                 </div>
@@ -269,7 +294,7 @@
         <!-- Hero Section -->
         <section id="problem" class="max-w-6xl mx-auto px-6 text-center mb-32">
             <div class="inline-block px-4 py-1 rounded-full border border-brand-muted/20 text-[10px] text-brand-muted font-mono mb-8">
-                ID: 2427030540
+                ID: 2427838540
             </div>
             <h1 class="text-5xl md:text-7xl font-extrabold mb-10 tracking-tight leading-tight gradient-text">
                 Gesture based navigation system
@@ -383,7 +408,7 @@
                 <div class="glass-card p-10 rounded-[2.5rem] w-80 text-center glow-accent">
                     <p class="text-[10px] text-brand-accent font-black uppercase tracking-widest mb-4">Student</p>
                     <h5 class="text-2xl font-extrabold mb-1 text-brand-light">Gautam Sahu</h5>
-                    <p class="text-xs text-brand-muted font-mono">Reg No: 2427030540</p>
+                    <p class="text-xs text-brand-muted font-mono">Reg No: 2427838540</p>
                 </div>
             </div>
         </section>
@@ -407,11 +432,33 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Full screen image functions
+        function openImage(src) {
+            const modal = document.getElementById('imageFullscreenModal');
+            const img = document.getElementById('fullscreenImg');
+            img.src = src;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImage() {
+            const modal = document.getElementById('imageFullscreenModal');
+            modal.classList.remove('active');
+            // Wait for transition before allowing page scroll
+            setTimeout(() => {
+                // Only allow scroll if no other modals are active
+                if (!document.querySelector('.modal-overlay.active')) {
+                    document.body.style.overflow = 'auto';
+                }
+            }, 300);
+        }
+
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal('gfgModal');
                 closeModal('datasetModal');
                 closeModal('literatureModal');
+                closeImage();
             }
         });
 
