@@ -97,6 +97,8 @@ while True:
 
             elif direction_text == "DOWN":
                 keyboard.press_and_release("windows+d")
+            elif direction_text == "UP":
+                keyboard.press_and_release("alt+tab")
 
             last_action_time = current_time
             stable_frames = 0
@@ -114,5 +116,6 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
 
 
