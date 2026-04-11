@@ -70,25 +70,22 @@
         .modal-overlay {
             transition: opacity 0.3s ease;
             display: none;
+            opacity: 0;
         }
         .modal-overlay.active {
             display: flex;
             opacity: 1;
         }
 
-        /* Lightbox specific animations */
-        #imageFullscreenModal  {
+        #imageFullscreenModal {
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #imageFullscreenModal.active  {
-            transform: scale(1);
         }
     </style>
 </head>
 <body class="selection:bg-brand-accent/30">
 
     <!-- Full Screen Image Modal -->
-    <div id="imageFullscreenModal" onclick="closeImage()" class="modal-overlay fixed inset-0 z-[200] bg-brand-dark/95 backdrop-blur-2xl p-4 md:p-12 items-center justify-center cursor-zoom-out opacity-0 transition-all duration-300">
+    <div id="imageFullscreenModal" onclick="closeImage()" class="modal-overlay fixed inset-0 z-[200] bg-brand-dark/95 backdrop-blur-2xl p-4 md:p-12 items-center justify-center cursor-zoom-out">
         <button class="absolute top-8 right-8 text-white/50 hover:text-brand-accent transition-colors z-[210]">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
@@ -96,7 +93,7 @@
     </div>
 
     <!-- Modal for Literature Review -->
-    <div id="literatureModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center opacity-0">
+    <div id="literatureModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
         <div class="glass-card w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-10 md:p-16 relative glow-accent">
             <button onclick="closeModal('literatureModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -131,140 +128,83 @@
                     </div>
                 </div>
 
-                <div class="border-t border-white/5 pt-10">
-                    <h4 class="text-xl font-bold mb-6 underline underline-offset-8 decoration-brand-accent">Formal References</h4>
-                    <div class="space-y-4 text-xs text-brand-muted leading-relaxed">
-                        <p><span class="text-brand-light font-bold">1. Oudah, M., et al. (2020).</span> Hand Gesture Recognition Based on Computer Vision. <span class="italic text-brand-accent/70">Journal of Imaging.</span></p>
-                        <p><span class="text-brand-light font-bold">2. Lugaresi, C., et al. (2019).</span> MediaPipe: A Framework for Building Perception Pipelines. <span class="italic text-brand-accent/70">arXiv.</span></p>
-                        <p><span class="text-brand-light font-bold">3. Jocher, G., et al. (2024).</span> Ultralytics YOLOv11 Documentation. <span class="italic text-brand-accent/70">Technical Manuscript.</span></p>
-                        <p><span class="text-brand-light font-bold">4. Jiang, S., et al. (2021).</span> Emerging Wearable Interfaces. <span class="italic text-brand-accent/70">IEEE Reviews in Biomedical Engineering.</span></p>
-                        <p><span class="text-brand-light font-bold">5. DTIC (2018).</span> Vision-Based Mouse Control. <span class="italic text-brand-accent/70">Defense Technical Information Center.</span></p>
-                    </div>
+                <div class="border-t border-white/5 pt-10 text-xs text-brand-muted leading-relaxed">
+                    <h4 class="text-xl font-bold mb-6 underline underline-offset-8 decoration-brand-accent text-brand-light">Formal References</h4>
+                    <p><span class="text-brand-light font-bold">1. Vultur, O. M., et al. (2012).</span> Navigation system in a virtual environment by gestures. <span class="italic text-brand-accent/70">COMM Conference.</span></p>
+                    <p><span class="text-brand-light font-bold">2. Lugaresi, C., et al. (2019).</span> MediaPipe: A Framework for Building Perception Pipelines. <span class="italic text-brand-accent/70">arXiv.</span></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Model/Architecture -->
-    <div id="gfgModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center opacity-0">
+    <!-- Modal for Model/Architecture (Now includes Integrated Pipeline) -->
+    <div id="gfgModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
         <div class="glass-card w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] p-8 md:p-12 relative glow-accent">
             <button onclick="closeModal('gfgModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
+            
             <div class="space-y-12">
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4">Technical Deep Dive</h3>
                     <h2 class="text-4xl font-extrabold mb-8">Model & Architecture</h2>
-                    <p class="text-brand-muted leading-relaxed text-lg">
-                        Our system utilizes a hybrid approach, combining the real-time detection speed of YOLO with the precision landmarking of MediaPipe.
-                    </p>
                 </div>
 
-                <!-- Architectural Synergy Visual -->
-                <div class="space-y-4">
-                    <h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent">Hybrid Synergy Visual</h4>
-                    <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/20 cursor-zoom-in group">
-                        <img src="images/image_d64240.png" onclick="openImage(this.src)" alt="Why YOLOv11 + MediaPipe?" class="w-full h-auto block group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/800x400/25343f/4f8eff?text=Hybrid+Architecture+Synergy'">
+                <!-- Integrated Pipeline Section -->
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <h4 class="text-2xl font-bold border-l-4 border-brand-accent pl-4">Integrated Pipeline</h4>
+                        <ul class="space-y-4 text-brand-muted text-sm leading-relaxed">
+                            <li class="flex gap-3">
+                                <span class="text-brand-accent font-bold">•</span>
+                                <span><strong>Computer Vision Core:</strong> OpenCV handles real-time video stream capture and transformation.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="text-brand-accent font-bold">•</span>
+                                <span><strong>Detection Engine:</strong> YOLOv11 custom-trained model predicts specific gesture bounding boxes.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="text-brand-accent font-bold">•</span>
+                                <span><strong>Landmark Stabilization:</strong> MediaPipe maps hand skeleton for precision refinement.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="text-brand-accent font-bold">•</span>
+                                <span><strong>Action Mapping:</strong> Navigation logic transforms detected signals into system commands.</span>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
-                        <h4 class="font-bold text-brand-accent mb-4 uppercase text-xs tracking-widest">Single Regression</h4>
-                        <p class="text-sm text-brand-light/80 leading-relaxed">
-                            YOLO frames detection as a regression problem. It divides the image into an $S \times S$ grid, predicting bounding boxes and class probabilities simultaneously.
-                        </p>
-                    </div>
-                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
-                        <h4 class="font-bold text-brand-accent mb-4 uppercase text-xs tracking-widest">MediaPipe Refinement</h4>
-                        <p class="text-sm text-brand-light/80 leading-relaxed">
-                            MediaPipe provides 21-point hand landmarking within the YOLO-cropped Region of Interest (ROI), ensuring pixel-perfect gesture recognition.
-                        </p>
+                    <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/20 group cursor-zoom-in" onclick="openImage('image_db993b.png')">
+                        <img src="image_db993b.png" alt="Integrated Pipeline" class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/25343f/4f8eff?text=Pipeline+Diagram'">
                     </div>
                 </div>
 
                 <!-- Training Batches Gallery -->
                 <div class="space-y-6">
-                    <h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent">Training & Detection Samples</h4>
+                    <h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent">Training Batches Visualization</h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40 cursor-zoom-in group">
-                            <img src="images/train_batch0.jpg" onclick="openImage(this.src)" alt="Training Batch 0" class="w-full h-auto group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+0'">
-                        </div>
-                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40 cursor-zoom-in group">
-                            <img src="images/train_batch1.jpg" onclick="openImage(this.src)" alt="Training Batch 1" class="w-full h-auto group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+1'">
-                        </div>
-                        <div class="rounded-xl overflow-hidden border border-white/5 bg-black/40 cursor-zoom-in group">
-                            <img src="images/train_batch2.jpg" onclick="openImage(this.src)" alt="Training Batch 2" class="w-full h-auto group-hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+2'">
-                        </div>
+                        <img src="train_batch0.jpg" onclick="openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+0'">
+                        <img src="train_batch1.jpg" onclick="openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+1'">
+                        <img src="train_batch2.jpg" onclick="openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+2'">
                     </div>
-                </div>
-
-                <div class="border-t border-white/5 pt-10">
-                    <h4 class="text-xl font-bold mb-6">Network Architecture</h4>
-                    <p class="text-brand-muted text-sm leading-relaxed mb-6">
-                        The architecture utilizes 24 convolutional layers followed by 2 fully connected layers, enabling the single-pass inference required for real-time interaction.
-                    </p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal for Dataset/Input -->
-    <div id="datasetModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center opacity-0">
+    <div id="datasetModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
         <div class="glass-card w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-10 md:p-16 relative glow-accent">
             <button onclick="closeModal('datasetModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div class="space-y-12">
-                <div>
-                    <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4">Data & Pipeline</h3>
-                    <h2 class="text-4xl font-extrabold mb-8">Dataset Specifications</h2>
-                    <p class="text-brand-muted leading-relaxed text-lg">
-                        To achieve high accuracy, the system requires a diverse dataset representing various hand orientations. We utilize a hybrid pipeline that sources <strong>RoboFlow</strong> data and processes it through a 21-point skeletal mapping.
-                    </p>
-                </div>
-
-                <!-- Visual Pipeline Component -->
-                <div class="grid md:grid-cols-4 gap-4 py-8 border-y border-white/5">
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-12 h-12 rounded-xl bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center text-brand-accent mb-3">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                        </div>
-                        <span class="text-[10px] uppercase font-bold tracking-widest">Input Stream</span>
-                        <span class="text-[8px] text-brand-muted">640x640 RGB</span>
-                    </div>
-                    <div class="flex items-center justify-center opacity-20 hidden md:flex">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </div>
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-12 h-12 rounded-xl bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center text-brand-accent mb-3">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
-                        </div>
-                        <span class="text-[10px] uppercase font-bold tracking-widest">ROI Isolation</span>
-                        <span class="text-[8px] text-brand-muted">YOLO-Filtered</span>
-                    </div>
-                    <div class="flex items-center justify-center opacity-20 hidden md:flex">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
-                        <h4 class="font-bold text-brand-accent mb-4 uppercase text-xs tracking-widest">Training Data</h4>
-                        <ul class="text-sm text-brand-light/80 space-y-3 list-disc pl-4">
-                            <li><strong>RoboFlow Dataset:</strong> 2,500+ annotated images.</li>
-                            <li><strong>Custom Samples:</strong> 500 images of specific navigation gestures.</li>
-                            <li><strong>Augmentation:</strong> Rotation, shear, and brightness adjustments.</li>
-                        </ul>
-                    </div>
-                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
-                        <h4 class="font-bold text-brand-accent mb-4 uppercase text-xs tracking-widest">Input Pipeline</h4>
-                        <ul class="text-sm text-brand-light/80 space-y-3 list-disc pl-4">
-                            <li><strong>MediaPipe Integration:</strong> 21-point hand landmarking for skeletal tracking.</li>
-                            <li><strong>Latency:</strong> Frame processing capped at 22ms.</li>
-                            <li><strong>Robustness:</strong> High accuracy (>95%) in cluttered environments.</li>
-                        </ul>
-                    </div>
+                <h2 class="text-4xl font-extrabold mb-8">Dataset Specifications</h2>
+                <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
+                    <ul class="text-sm text-brand-light/80 space-y-4 list-disc pl-4">
+                        <li><strong>RoboFlow Sourced:</strong> 3,000+ annotated frames.</li>
+                        <li><strong>Augmentation:</strong> Horizontal flip, random rotation, and mosaic training.</li>
+                        <li><strong>Classes:</strong> 4 directions (Up, Down, Left, Right).</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -311,23 +251,22 @@
             <div class="glass-card p-12 rounded-[2.5rem] glow-accent">
                 <h3 class="text-3xl font-bold mb-6">Problem Statement</h3>
                 <p class="text-brand-muted text-lg leading-relaxed">
-                    Modern digital environments require non-contact interaction (sterile medical settings, touchless kiosks). Traditional inputs are physically limiting and unhygienic. Our goal is to provide a low-cost, webcam-based alternative that maintains robustness in cluttered backgrounds.
+                    Modern digital environments increasingly require non-contact interaction (presentations, sterile labs, kiosks). Traditional mice and keyboards are limiting and unhygienic. Our webcam-based system provides a low-cost, high-performance alternative using computer vision.
                 </p>
             </div>
             <div class="space-y-6">
-                <!-- Literature Review Card -->
                 <div class="defined-box p-8 rounded-3xl transition-all hover:border-brand-accent cursor-pointer group" onclick="openModal('literatureModal')">
                     <div class="flex justify-between items-center mb-3">
-                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent">Literature Review / Market Research</h4>
-                        <span class="text-[8px] font-black uppercase text-brand-muted group-hover:text-brand-accent transition-colors">Expand Content +</span>
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent">Literature Review</h4>
+                        <span class="text-[8px] font-black uppercase text-brand-muted group-hover:text-brand-accent transition-colors">Expand +</span>
                     </div>
                     <p class="text-brand-light font-bold italic text-sm">
-                        O. M. Vultur, Ş. G. Pentiuc and A. Ciupu, "Navigation system in a virtual environment by gestures," 2012 9th International Conference on Communications (COMM), Bucharest, Romania, 2012, pp. 111-114.
+                        O. M. Vultur, et al., "Navigation system in a virtual environment by gestures," COMM 2012.
                     </p>
                 </div>
                 <div class="defined-box p-6 rounded-3xl transition-all hover:border-brand-accent">
                     <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent mb-3">Research Gap / Innovation</h4>
-                    <p class="text-brand-light font-bold italic text-sm">Bridging the gap between high-latency hardware systems and real-time, lightweight camera-driven recognition using a YOLOv11 hybrid architecture.</p>
+                    <p class="text-brand-light font-bold italic text-sm">Replacing depth-heavy sensors with a lightweight YOLOv11 + MediaPipe hybrid for real-time edge processing.</p>
                 </div>
             </div>
         </section>
@@ -338,22 +277,21 @@
                 System <span class="text-brand-accent">Methodology</span>
             </h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center cursor-pointer group hover:scale-[1.02] transition-transform" onclick="openModal('datasetModal')">
+                <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center cursor-pointer group" onclick="openModal('datasetModal')">
                     <div class="w-16 h-16 bg-brand-accent/20 rounded-2xl flex items-center justify-center text-brand-accent mb-6 group-hover:bg-brand-accent group-hover:text-white transition-all">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3zM4 7c0-2 1-3 3-3h10c2 0 3 1 3 3M4 12h16m-16 5h16"></path></svg>
                     </div>
                     <h4 class="font-bold uppercase tracking-widest text-sm mb-3">Dataset / Input</h4>
-                    <p class="text-xs text-brand-muted leading-relaxed">Dataset obtained from RoboFlow and annotated manually for gesture precision.</p>
+                    <p class="text-xs text-brand-muted leading-relaxed">Sourced from RoboFlow and custom recorded hand gestures.</p>
                 </div>
-                <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center cursor-pointer group hover:scale-[1.02] transition-transform" onclick="openModal('gfgModal')">
+                <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center cursor-pointer group" onclick="openModal('gfgModal')">
                     <div class="w-16 h-16 bg-brand-accent/20 rounded-2xl flex items-center justify-center text-brand-accent mb-6 group-hover:bg-brand-accent group-hover:text-white transition-all">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
                     </div>
-                    <h4 class="font-bold uppercase tracking-widest text-sm mb-3 group-hover:text-brand-accent transition-colors">Model / Architecture</h4>
-                    <p class="text-xs text-brand-muted leading-relaxed">Custom YOLOv11 Machine Learning model running in tandem with MediaPipe and OpenCV.</p>
+                    <h4 class="font-bold uppercase tracking-widest text-sm mb-3">Model / Architecture</h4>
+                    <p class="text-xs text-brand-muted leading-relaxed">Integrated YOLOv11 detection with MediaPipe landmark stabilization.</p>
                 </div>
                 
-                <!-- Project Assets / Execution Card -->
                 <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center border-brand-accent/40">
                     <div class="w-16 h-16 bg-brand-accent/30 rounded-2xl flex items-center justify-center text-white mb-6">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
@@ -367,8 +305,6 @@
                                 VIEW CODE / DEMO
                             </button>
                         </a>
-
-                        <!-- Added Presentation Button -->
                         <a href="https://docs.google.com/presentation/d/1h7TFH3j7GD9INi3EaJ7DNyhS8Ewv6FfIks-G-7m3ahw/edit?usp=sharing" target="_blank" class="w-full">
                             <button class="w-full bg-transparent border border-brand-accent/60 hover:bg-brand-accent/10 text-brand-accent font-extrabold py-3 rounded-xl text-xs tracking-widest transition-all transform hover:scale-105 flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
@@ -403,7 +339,7 @@
                             </div>
                         </div>
                         <p class="text-brand-muted text-sm italic leading-relaxed px-2">
-                            "The system achieves high-precision gesture mapping with minimal latency, significantly outperforming standard mouse-emulation software."
+                            "High-precision gesture mapping with minimal latency, outperforming baseline Kinect sensors in spatial tasks."
                         </p>
                     </div>
                 </div>
@@ -428,7 +364,7 @@
         </section>
     </main>
 
-    <footer class="py-20 border-t border-white/5 text-center">
+    <footer class="py-20 border-t border-white/5 text-center opacity-40">
         <div class="max-w-7xl mx-auto px-6">
             <h6 class="text-sm font-black uppercase tracking-[0.3em] text-brand-muted mb-2">Manipal University Jaipur</h6>
             <p class="text-[10px] text-brand-muted uppercase tracking-widest">Department of Computer Science & Engineering • 2026</p>
@@ -437,16 +373,17 @@
 
     <script>
         function openModal(id) {
-            document.getElementById(id).classList.add('active');
+            const modal = document.getElementById(id);
+            modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
-        // Full screen image functions
         function openImage(src) {
             const modal = document.getElementById('imageFullscreenModal');
             const img = document.getElementById('fullscreenImg');
@@ -458,13 +395,9 @@
         function closeImage() {
             const modal = document.getElementById('imageFullscreenModal');
             modal.classList.remove('active');
-            // Wait for transition before allowing page scroll
-            setTimeout(() => {
-                // Only allow scroll if no other modals are active
-                if (!document.querySelector('.modal-overlay.active')) {
-                    document.body.style.overflow = 'auto';
-                }
-            }, 300);
+            if (!document.querySelector('.modal-overlay.active')) {
+                document.body.style.overflow = 'auto';
+            }
         }
 
         window.addEventListener('keydown', (e) => {
@@ -476,25 +409,22 @@
             }
         });
 
+        // Performance Chart
         const canvas = document.getElementById('performanceChart');
         const ctx = canvas.getContext('2d');
-
         function resizeCanvas() {
-            const container = canvas.parentElement;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
         }
-
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
         const chartData = [
-            { label: "Existing System", value: 68, color: "rgb(191, 201, 209)", hoverColor: "#ffffff" },
-            { label: "Our Solution", value: 94, color: "rgb(79, 142, 255)", hoverColor: "#a5c4ff" }
+            { label: "EXISTING SYSTEM", value: 68, color: "rgb(191, 201, 209)" },
+            { label: "OUR SOLUTION", value: 94, color: "rgb(79, 142, 255)" }
         ];
 
         let progress = 0;
-        
         function animateChart() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const barWidth = Math.min(canvas.width * 0.15, 80);
@@ -531,7 +461,7 @@
                 ctx.fillStyle = "rgb(191, 201, 209)";
                 ctx.font = "bold 10px 'Plus Jakarta Sans'";
                 ctx.textAlign = "center";
-                ctx.fillText(bar.label.toUpperCase(), x + barWidth / 2, floorY + 25);
+                ctx.fillText(bar.label, x + barWidth / 2, floorY + 25);
             });
 
             if (progress < 1) {
