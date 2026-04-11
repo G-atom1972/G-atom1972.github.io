@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,16 +30,21 @@
             overflow-x: hidden;
         }
 
+        .no-scroll {
+            overflow: hidden !important;
+        }
+
         .glass-card {
             background: rgba(234, 239, 239, 0.05);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(234, 239, 239, 0.1);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
             border-color: rgba(79, 142, 255, 0.6);
             background: rgba(234, 239, 239, 0.08);
+            transform: translateY(-4px);
         }
 
         .gradient-text {
@@ -49,13 +54,29 @@
         }
 
         .glow-accent {
-            box-shadow: 0 0 30px rgba(79, 142, 255, 0.25);
-            border: 1px solid rgba(79, 142, 255, 0.7) !important;
+            box-shadow: 0 0 30px rgba(79, 142, 255, 0.15);
+            border: 1px solid rgba(79, 142, 255, 0.5) !important;
         }
 
         .nav-link {
             color: rgb(191, 201, 209);
             transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: rgb(79, 142, 255);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
         }
 
         .nav-link:hover {
@@ -63,39 +84,43 @@
         }
 
         .defined-box {
-            border: 1.5px solid rgba(234, 239, 239, 0.4);
+            border: 1.5px solid rgba(234, 239, 239, 0.2);
             background: rgba(37, 52, 63, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .defined-box:hover {
+            border-color: rgba(79, 142, 255, 0.5);
         }
 
         .modal-overlay {
-            transition: opacity 0.3s ease;
             display: none;
             opacity: 0;
+            transition: opacity 0.3s ease;
         }
+        
         .modal-overlay.active {
             display: flex;
             opacity: 1;
-        }
-
-        #imageFullscreenModal {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
     </style>
 </head>
 <body class="selection:bg-brand-accent/30">
 
+    <a href="#main-content" class="sr-only focus:not-sr-only absolute top-4 left-4 z-[300] bg-brand-accent text-white px-4 py-2 rounded-lg">Skip to content</a>
+
     <!-- Full Screen Image Modal -->
-    <div id="imageFullscreenModal" onclick="closeImage()" class="modal-overlay fixed inset-0 z-[200] bg-brand-dark/95 backdrop-blur-2xl p-4 md:p-12 items-center justify-center cursor-zoom-out">
-        <button class="absolute top-8 right-8 text-white/50 hover:text-brand-accent transition-colors z-[210]">
+    <div id="imageFullscreenModal" role="dialog" aria-modal="true" onclick="UI.closeImage()" class="modal-overlay fixed inset-0 z-[200] bg-brand-dark/95 backdrop-blur-2xl p-4 md:p-12 items-center justify-center cursor-zoom-out">
+        <button aria-label="Close" class="absolute top-8 right-8 text-white/50 hover:text-brand-accent transition-colors z-[210]">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
         <img id="fullscreenImg" src="" alt="Preview" class="max-w-full max-h-full rounded-xl shadow-2xl scale-95 transition-transform duration-500">
     </div>
 
     <!-- Modal for Literature Review -->
-    <div id="literatureModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
+    <div id="literatureModal" role="dialog" aria-modal="true" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
         <div class="glass-card w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-10 md:p-16 relative glow-accent">
-            <button onclick="closeModal('literatureModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
+            <button onclick="UI.closeModal('literatureModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div class="space-y-10">
@@ -130,28 +155,98 @@
 
                 <div class="border-t border-white/5 pt-10 text-xs text-brand-muted leading-relaxed">
                     <h4 class="text-xl font-bold mb-6 underline underline-offset-8 decoration-brand-accent text-brand-light">Formal References</h4>
-                    <p><span class="text-brand-light font-bold">1. Vultur, O. M., et al. (2012).</span> Navigation system in a virtual environment by gestures. <span class="italic text-brand-accent/70">COMM Conference.</span></p>
+                    <p class="mb-3"><span class="text-brand-light font-bold">1. Vultur, O. M., et al. (2012).</span> Navigation system in a virtual environment by gestures. <span class="italic text-brand-accent/70">COMM Conference.</span></p>
                     <p><span class="text-brand-light font-bold">2. Lugaresi, C., et al. (2019).</span> MediaPipe: A Framework for Building Perception Pipelines. <span class="italic text-brand-accent/70">arXiv.</span></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Model/Architecture (Now includes Integrated Pipeline) -->
-    <div id="gfgModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
-        <div class="glass-card w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] p-8 md:p-12 relative glow-accent">
-            <button onclick="closeModal('gfgModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
+    <!-- Modal for Dataset Details -->
+    <div id="datasetModal" role="dialog" aria-modal="true" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
+        <div class="glass-card w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-10 md:p-16 relative glow-accent">
+            <button onclick="UI.closeModal('datasetModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            
+            <div class="space-y-10">
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4">Data Pipeline</h2>
+                    <h3 class="text-4xl font-extrabold mb-6">RoboFlow & YOLOv11 Specs</h3>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h4 class="text-xl font-bold text-brand-light">RoboFlow Integration</h4>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            3,000+ annotated frames sourced via RoboFlow Universe. Augmentation pipeline includes horizontal flips, random rotations, and mosaic training.
+                        </p>
+                        <ul class="text-xs space-y-2 text-brand-muted list-disc pl-4">
+                            <li>80/10/10 Train/Valid/Test Split</li>
+                            <li>Classes: Up, Down, Left, Right</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="text-xl font-bold text-brand-light">YOLOv11 Optimization</h4>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            Utilizing YOLOv11n (Nano) for high-frequency real-time detection on low-compute edge devices.
+                        </p>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+                            <p class="text-xs font-mono text-brand-accent">mAP@.5: 94.2%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Advanced Mode -->
+    <div id="advancedModal" role="dialog" aria-modal="true" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
+        <div class="glass-card w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-10 md:p-16 relative glow-accent">
+            <button onclick="UI.closeModal('advancedModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="space-y-10">
+                <div class="text-center">
+                    <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4">Innovation Layer</h2>
+                    <h3 class="text-4xl font-extrabold mb-6">Advanced Mode: Pinch-to-Draw</h3>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/40 p-8 flex items-center justify-center cursor-zoom-in" onclick="UI.openImage(this.querySelector('img').src)">
+                         <img src="images/hand_landmarks.png" alt="Hand landmarks" class="max-w-full h-auto opacity-80" onerror="UI.handleImgError(this, 'Spatial Draw Logic')">
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-2xl font-bold text-brand-light">Pinch Interaction</h4>
+                        <p class="text-brand-muted text-sm leading-relaxed">
+                            Draw on screen by calculating the Euclidean distance between Landmark 4 (Thumb) and Landmark 8 (Index).
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex gap-4 items-start">
+                                <div class="w-8 h-8 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent text-xs font-bold shrink-0">1</div>
+                                <p class="text-xs text-brand-muted">Distance Detection: Pinch state triggers 'Virtual Ink' at Index tip coordinates.</p>
+                            </li>
+                            <li class="flex gap-4 items-start">
+                                <div class="w-8 h-8 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent text-xs font-bold shrink-0">2</div>
+                                <p class="text-xs text-brand-muted">Smoothing: Recursive averaging to prevent line jittering.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Model Architecture -->
+    <div id="gfgModal" role="dialog" aria-modal="true" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
+        <div class="glass-card w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] p-8 md:p-12 relative glow-accent">
+            <button onclick="UI.closeModal('gfgModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
             <div class="space-y-12">
                 <div>
-                    <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4">Technical Deep Dive</h3>
-                    <h2 class="text-4xl font-extrabold mb-8">Model & Architecture</h2>
+                    <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4">Technical Deep Dive</h2>
+                    <h3 class="text-4xl font-extrabold mb-8">Model & Architecture</h3>
                 </div>
 
-                <!-- Integrated Pipeline Section -->
-                <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="grid md:grid-cols-2 gap-12 items-start">
                     <div class="space-y-6">
                         <h4 class="text-2xl font-bold border-l-4 border-brand-accent pl-4">Integrated Pipeline</h4>
                         <ul class="space-y-4 text-brand-muted text-sm leading-relaxed">
@@ -161,50 +256,31 @@
                             </li>
                             <li class="flex gap-3">
                                 <span class="text-brand-accent font-bold">•</span>
-                                <span><strong>Detection Engine:</strong> YOLOv11 custom-trained model predicts specific gesture bounding boxes.</span>
+                                <span><strong>Detection Engine:</strong> YOLOv11 custom model predicts specific gesture bounding boxes.</span>
                             </li>
                             <li class="flex gap-3">
                                 <span class="text-brand-accent font-bold">•</span>
                                 <span><strong>Landmark Stabilization:</strong> MediaPipe maps hand skeleton for precision refinement.</span>
                             </li>
-                            <li class="flex gap-3">
-                                <span class="text-brand-accent font-bold">•</span>
-                                <span><strong>Action Mapping:</strong> Navigation logic transforms detected signals into system commands.</span>
-                            </li>
                         </ul>
                     </div>
-                    <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/20 group cursor-zoom-in" onclick="openImage('image_db993b.png')">
-                        <img src="image_db993b.png" alt="Integrated Pipeline" class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/25343f/4f8eff?text=Pipeline+Diagram'">
+                    <div class="space-y-6">
+                        <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/20 group cursor-zoom-in" onclick="UI.openImage(this.querySelector('img').src)">
+                            <img src="images/image_d64240.png" alt="Integrated Pipeline" class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" onerror="UI.handleImgError(this, 'Architecture Overview')">
+                        </div>
+                        <div class="rounded-2xl overflow-hidden border border-white/10 bg-black/20 group cursor-zoom-in" onclick="UI.openImage(this.querySelector('img').src)">
+                            <img src="images/hand_landmarks.png" alt="Hand Landmark topology" class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" onerror="UI.handleImgError(this, 'Hand Landmark topology')">
+                        </div>
                     </div>
                 </div>
 
-                <!-- Training Batches Gallery -->
                 <div class="space-y-6">
                     <h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent">Training Batches Visualization</h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <img src="train_batch0.jpg" onclick="openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+0'">
-                        <img src="train_batch1.jpg" onclick="openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+1'">
-                        <img src="train_batch2.jpg" onclick="openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="this.src='https://placehold.co/400x400/25343f/4f8eff?text=Batch+2'">
+                        <img src="images/train_batch0.jpg" alt="Batch 0" onclick="UI.openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="UI.handleImgError(this, 'Batch 0')">
+                        <img src="images/train_batch1.jpg" alt="Batch 1" onclick="UI.openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="UI.handleImgError(this, 'Batch 1')">
+                        <img src="images/train_batch2.jpg" alt="Batch 2" onclick="UI.openImage(this.src)" class="rounded-xl border border-white/5 cursor-zoom-in hover:opacity-80 transition-opacity" onerror="UI.handleImgError(this, 'Batch 2')">
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Dataset/Input -->
-    <div id="datasetModal" class="modal-overlay fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl p-6 items-center justify-center">
-        <div class="glass-card w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-10 md:p-16 relative glow-accent">
-            <button onclick="closeModal('datasetModal')" class="absolute top-8 right-8 text-brand-muted hover:text-brand-accent transition-colors">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <div class="space-y-12">
-                <h2 class="text-4xl font-extrabold mb-8">Dataset Specifications</h2>
-                <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
-                    <ul class="text-sm text-brand-light/80 space-y-4 list-disc pl-4">
-                        <li><strong>RoboFlow Sourced:</strong> 3,000+ annotated frames.</li>
-                        <li><strong>Augmentation:</strong> Horizontal flip, random rotation, and mosaic training.</li>
-                        <li><strong>Classes:</strong> 4 directions (Up, Down, Left, Right).</li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -216,7 +292,7 @@
             <div class="flex items-center gap-4">
                 <div class="w-10 h-10 bg-brand-light rounded flex items-center justify-center font-extrabold text-brand-dark text-sm">PBL</div>
                 <div>
-                    <h2 class="text-xl font-bold tracking-tight">PBL <span class="text-brand-accent">2026</span></h2>
+                    <h1 class="text-xl font-bold tracking-tight">PBL <span class="text-brand-accent">2026</span></h1>
                     <p class="text-[9px] uppercase tracking-[0.2em] text-brand-muted font-bold">Dept. of Computer Science & Engineering</p>
                 </div>
             </div>
@@ -229,19 +305,18 @@
         </div>
     </nav>
 
-    <main class="pt-32 pb-20">
-        
-        <!-- Hero Section -->
+    <main id="main-content" class="pt-32 pb-20">
+        <!-- Hero -->
         <section id="problem" class="max-w-6xl mx-auto px-6 text-center mb-32">
             <div class="inline-block px-4 py-1 rounded-full border border-brand-muted/20 text-[10px] text-brand-muted font-mono mb-8">
                 ID: 2427030540
             </div>
-            <h1 class="text-5xl md:text-7xl font-extrabold mb-10 tracking-tight leading-tight gradient-text">
-                Gesture based navigation system
-            </h1>
+            <h2 class="text-5xl md:text-7xl font-extrabold mb-10 tracking-tight leading-tight gradient-text">
+                Gesture Based Navigation
+            </h2>
             <div class="max-w-3xl mx-auto border-l-4 border-brand-accent pl-8 text-left">
                 <p class="text-xl md:text-2xl text-brand-muted italic font-light leading-relaxed">
-                    "How can we enable seamless, non-contact interaction in specialized environments to overcome the physical limitations of traditional input devices?"
+                    "Enabling seamless, non-contact interaction using deep learning and spatial hand tracking."
                 </p>
             </div>
         </section>
@@ -255,7 +330,7 @@
                 </p>
             </div>
             <div class="space-y-6">
-                <div class="defined-box p-8 rounded-3xl transition-all hover:border-brand-accent cursor-pointer group" onclick="openModal('literatureModal')">
+                <div class="defined-box p-8 rounded-3xl transition-all cursor-pointer group" onclick="UI.openModal('literatureModal')">
                     <div class="flex justify-between items-center mb-3">
                         <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent">Literature Review</h4>
                         <span class="text-[8px] font-black uppercase text-brand-muted group-hover:text-brand-accent transition-colors">Expand +</span>
@@ -264,59 +339,61 @@
                         O. M. Vultur, et al., "Navigation system in a virtual environment by gestures," COMM 2012.
                     </p>
                 </div>
-                <div class="defined-box p-6 rounded-3xl transition-all hover:border-brand-accent">
+                <div class="defined-box p-6 rounded-3xl transition-all">
                     <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent mb-3">Research Gap / Innovation</h4>
                     <p class="text-brand-light font-bold italic text-sm">Replacing depth-heavy sensors with a lightweight YOLOv11 + MediaPipe hybrid for real-time edge processing.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Methodology Section -->
+        <!-- Methodology Section (2x2 Grid) -->
         <section id="methodology" class="max-w-6xl mx-auto px-6 mb-40 text-center">
             <h2 class="text-4xl font-extrabold mb-16 tracking-tight uppercase">
                 System <span class="text-brand-accent">Methodology</span>
             </h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center cursor-pointer group" onclick="openModal('datasetModal')">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Dataset -->
+                <div class="glass-card p-10 rounded-[2.5rem] flex flex-col items-center cursor-pointer group" onclick="UI.openModal('datasetModal')">
                     <div class="w-16 h-16 bg-brand-accent/20 rounded-2xl flex items-center justify-center text-brand-accent mb-6 group-hover:bg-brand-accent group-hover:text-white transition-all">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3zM4 7c0-2 1-3 3-3h10c2 0 3 1 3 3M4 12h16m-16 5h16"></path></svg>
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"></path></svg>
                     </div>
                     <h4 class="font-bold uppercase tracking-widest text-sm mb-3">Dataset / Input</h4>
-                    <p class="text-xs text-brand-muted leading-relaxed">Sourced from RoboFlow and custom recorded hand gestures.</p>
+                    <p class="text-xs text-brand-muted leading-relaxed">RoboFlow Universe sourced data for YOLOv11 training.</p>
                 </div>
-                <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center cursor-pointer group" onclick="openModal('gfgModal')">
+
+                <!-- Model Architecture -->
+                <div class="glass-card p-10 rounded-[2.5rem] flex flex-col items-center cursor-pointer group" onclick="UI.openModal('gfgModal')">
                     <div class="w-16 h-16 bg-brand-accent/20 rounded-2xl flex items-center justify-center text-brand-accent mb-6 group-hover:bg-brand-accent group-hover:text-white transition-all">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
                     </div>
-                    <h4 class="font-bold uppercase tracking-widest text-sm mb-3">Model / Architecture</h4>
-                    <p class="text-xs text-brand-muted leading-relaxed">Integrated YOLOv11 detection with MediaPipe landmark stabilization.</p>
+                    <h4 class="font-bold uppercase tracking-widest text-sm mb-3">Model Architecture</h4>
+                    <p class="text-xs text-brand-muted leading-relaxed">Hybrid neural pipeline for high-frequency detection & stability.</p>
                 </div>
-                
-                <div class="glass-card p-10 rounded-[2rem] flex flex-col items-center border-brand-accent/40">
-                    <div class="w-16 h-16 bg-brand-accent/30 rounded-2xl flex items-center justify-center text-white mb-6">
+
+                <!-- Advanced Mode -->
+                <div class="glass-card p-10 rounded-[2.5rem] flex flex-col items-center cursor-pointer group border-brand-accent/40" onclick="UI.openModal('advancedModal')">
+                    <div class="w-16 h-16 bg-brand-accent/30 rounded-2xl flex items-center justify-center text-brand-accent mb-6 group-hover:bg-brand-accent group-hover:text-white transition-all">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    </div>
+                    <h4 class="font-bold uppercase tracking-widest text-sm mb-3 text-brand-accent">Advanced Mode</h4>
+                    <p class="text-xs text-brand-muted leading-relaxed">Integrated 'Pinch-to-Draw' feature for high-precision virtual annotation.</p>
+                </div>
+
+                <!-- Resources -->
+                <div class="glass-card p-10 rounded-[2.5rem] flex flex-col items-center group">
+                    <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-brand-muted mb-6 group-hover:bg-brand-muted group-hover:text-brand-dark transition-all">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                     </div>
-                    <h4 class="font-bold uppercase tracking-widest text-sm mb-6 text-brand-accent">Project Assets</h4>
-                    
-                    <div class="flex flex-col gap-3 w-full">
-                        <a href="https://github.com/G-atom1972/G-atom1972.github.io/blob/main/test2.py" target="_blank" class="w-full">
-                            <button class="w-full bg-brand-accent hover:bg-blue-400 text-brand-light font-extrabold py-3 rounded-xl text-xs tracking-widest transition-all transform hover:scale-105 shadow-lg shadow-brand-accent/30 flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.103.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                VIEW CODE / DEMO
-                            </button>
-                        </a>
-                        <a href="https://docs.google.com/presentation/d/1h7TFH3j7GD9INi3EaJ7DNyhS8Ewv6FfIks-G-7m3ahw/edit?usp=sharing" target="_blank" class="w-full">
-                            <button class="w-full bg-transparent border border-brand-accent/60 hover:bg-brand-accent/10 text-brand-accent font-extrabold py-3 rounded-xl text-xs tracking-widest transition-all transform hover:scale-105 flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
-                                VIEW PRESENTATION
-                            </button>
-                        </a>
+                    <h4 class="font-bold uppercase tracking-widest text-sm mb-6">Project Resources</h4>
+                    <div class="flex flex-col gap-2 w-full px-4 text-center">
+                        <a href="https://github.com/G-atom1972/G-atom1972.github.io/blob/main/test2.py" target="_blank" class="text-[10px] font-bold py-2 bg-brand-accent/10 text-brand-accent rounded-lg text-center">GITHUB REPO</a>
+                        <a href="https://docs.google.com/presentation/d/1h7TFH3j7GD9INi3EaJ7DNyhS8Ewv6FfIks-G-7m3ahw/edit?usp=sharing" target="_blank" class="text-[10px] font-bold py-2 bg-brand-accent/10 text-brand-accent rounded-lg text-center">PRESENTATION</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Results Section -->
+        <!-- Results -->
         <section id="results" class="max-w-6xl mx-auto px-6 mb-40">
             <div class="glass-card p-12 md:p-16 rounded-[3rem] border-brand-accent/40">
                 <h2 class="text-4xl font-extrabold mb-16 text-center uppercase tracking-tight">
@@ -324,155 +401,153 @@
                 </h2>
                 <div class="grid lg:grid-cols-5 gap-16 items-center">
                     <div class="lg:col-span-3">
-                        <div class="relative h-[350px] w-full flex items-end justify-center gap-12 md:gap-24 border-b border-white/10 pb-4">
-                            <canvas id="performanceChart" class="absolute inset-0 w-full h-full"></canvas>
+                        <div id="chart-container" class="relative h-[350px] w-full border-b border-white/10 pb-4">
+                            <canvas id="performanceChart"></canvas>
                         </div>
                     </div>
                     <div class="lg:col-span-2 space-y-8">
                         <div class="glass-card p-10 rounded-3xl bg-brand-light/5">
                             <div class="flex justify-between items-end mb-4">
-                                <span class="text-xs font-bold uppercase tracking-widest text-brand-muted">Accuracy / Performance</span>
+                                <span class="text-xs font-bold uppercase tracking-widest text-brand-muted">Model Accuracy</span>
                                 <span class="text-5xl font-black text-brand-accent">94.2%</span>
                             </div>
                             <div class="w-full bg-brand-light/10 h-2 rounded-full overflow-hidden">
                                 <div class="bg-brand-accent h-full w-[94.2%] shadow-[0_0_15px_rgba(79, 142, 255, 0.5)]"></div>
                             </div>
                         </div>
-                        <p class="text-brand-muted text-sm italic leading-relaxed px-2">
-                            "High-precision gesture mapping with minimal latency, outperforming baseline Kinect sensors in spatial tasks."
-                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Team Section -->
+        <!-- Team -->
         <section id="team" class="max-w-6xl mx-auto px-6">
-            <h5 class="text-center text-[10px] uppercase tracking-[0.5em] text-brand-muted font-bold mb-12">Academic Credits</h5>
+            <h3 class="text-center text-[10px] uppercase tracking-[0.5em] text-brand-muted font-bold mb-12">Academic Credits</h3>
             <div class="flex flex-wrap justify-center gap-8">
                 <div class="glass-card p-10 rounded-[2.5rem] w-80 text-center glow-accent">
                     <p class="text-[10px] text-brand-accent font-black uppercase tracking-widest mb-4">Project Guide</p>
-                    <h5 class="text-2xl font-extrabold mb-1 text-brand-light">Dr. Aditya Sinha</h5>
+                    <h4 class="text-2xl font-extrabold mb-1 text-brand-light">Dr. Aditya Sinha</h4>
                     <p class="text-xs text-brand-muted font-medium">Assistant Professor</p>
                 </div>
                 <div class="glass-card p-10 rounded-[2.5rem] w-80 text-center glow-accent">
                     <p class="text-[10px] text-brand-accent font-black uppercase tracking-widest mb-4">Student</p>
-                    <h5 class="text-2xl font-extrabold mb-1 text-brand-light">Gautam Sahu</h5>
+                    <h4 class="text-2xl font-extrabold mb-1 text-brand-light">Gautam Sahu</h4>
                     <p class="text-xs text-brand-muted font-mono">Reg No: 2427030540</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="py-20 border-t border-white/5 text-center opacity-40">
+    <!-- Footer -->
+    <footer class="py-24 border-t border-white/5 text-center bg-brand-dark">
         <div class="max-w-7xl mx-auto px-6">
-            <h6 class="text-sm font-black uppercase tracking-[0.3em] text-brand-muted mb-2">Manipal University Jaipur</h6>
-            <p class="text-[10px] text-brand-muted uppercase tracking-widest">Department of Computer Science & Engineering • 2026</p>
+            <h6 class="text-xl md:text-2xl font-bold uppercase tracking-[0.4em] text-brand-muted mb-4">Manipal University Jaipur</h6>
+            <p class="text-[10px] md:text-xs text-brand-muted/60 uppercase tracking-[0.2em] font-medium">Department of Computer Science & Engineering • 2026</p>
         </div>
     </footer>
 
     <script>
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function openImage(src) {
-            const modal = document.getElementById('imageFullscreenModal');
-            const img = document.getElementById('fullscreenImg');
-            img.src = src;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeImage() {
-            const modal = document.getElementById('imageFullscreenModal');
-            modal.classList.remove('active');
-            if (!document.querySelector('.modal-overlay.active')) {
-                document.body.style.overflow = 'auto';
+        const UI = {
+            openModal(id) {
+                document.getElementById(id).classList.add('active');
+                document.documentElement.classList.add('no-scroll');
+            },
+            closeModal(id) {
+                document.getElementById(id).classList.remove('active');
+                if (!document.querySelector('.modal-overlay.active')) {
+                    document.documentElement.classList.remove('no-scroll');
+                }
+            },
+            openImage(src) {
+                const modal = document.getElementById('imageFullscreenModal');
+                document.getElementById('fullscreenImg').src = src;
+                modal.classList.add('active');
+                document.documentElement.classList.add('no-scroll');
+            },
+            closeImage() {
+                this.closeModal('imageFullscreenModal');
+            },
+            handleImgError(img, text) {
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250" viewBox="0 0 400 250">
+                    <rect width="400" height="250" fill="#25343f" rx="12"/>
+                    <text x="50%" y="50%" font-family="Plus Jakarta Sans" font-size="14" font-weight="bold" fill="#4f8eff" text-anchor="middle">${text}</text>
+                </svg>`;
+                img.src = `data:image/svg+xml;base64,${btoa(svg)}`;
             }
-        }
+        };
+
+        const ChartManager = {
+            canvas: document.getElementById('performanceChart'),
+            container: document.getElementById('chart-container'),
+            ctx: null,
+            progress: 0,
+            startTime: null,
+            data: [
+                { label: "BASELINE", value: 68, color: "rgb(191, 201, 209)" },
+                { label: "PROPOSED", value: 94, color: "rgb(79, 142, 255)" }
+            ],
+            init() {
+                this.ctx = this.canvas.getContext('2d');
+                this.resize();
+                window.addEventListener('resize', () => { this.resize(); this.restart(); });
+                this.restart();
+            },
+            resize() {
+                const dpr = window.devicePixelRatio || 1;
+                this.canvas.width = this.container.clientWidth * dpr;
+                this.canvas.height = this.container.clientHeight * dpr;
+                this.canvas.style.width = this.container.clientWidth + 'px';
+                this.canvas.style.height = this.container.clientHeight + 'px';
+                this.ctx.scale(dpr, dpr);
+            },
+            restart() {
+                this.startTime = null;
+                requestAnimationFrame((t) => this.animate(t));
+            },
+            animate(t) {
+                if (!this.startTime) this.startTime = t;
+                const elapsed = t - this.startTime;
+                this.progress = Math.min(elapsed / 1000, 1);
+                this.draw();
+                if (this.progress < 1) requestAnimationFrame((t) => this.animate(t));
+            },
+            draw() {
+                const ctx = this.ctx;
+                const w = this.container.clientWidth;
+                const h = this.container.clientHeight;
+                ctx.clearRect(0, 0, w, h);
+                const barW = 80;
+                const gap = 120;
+                const startX = (w - (barW * 2 + gap)) / 2;
+                const floorY = h - 40;
+
+                this.data.forEach((bar, i) => {
+                    const x = startX + i * (barW + gap);
+                    const targetH = (bar.value / 100) * (h - 100);
+                    const eased = 1 - Math.pow(1 - this.progress, 3);
+                    const curH = targetH * eased;
+                    const y = floorY - curH;
+
+                    ctx.fillStyle = bar.color;
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, barW, curH, [10, 10, 0, 0]);
+                    ctx.fill();
+
+                    ctx.fillStyle = "rgb(191, 201, 209)";
+                    ctx.font = "bold 10px Plus Jakarta Sans";
+                    ctx.textAlign = "center";
+                    ctx.fillText(bar.label, x + barW / 2, floorY + 25);
+                });
+            }
+        };
 
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                closeModal('gfgModal');
-                closeModal('datasetModal');
-                closeModal('literatureModal');
-                closeImage();
+                document.querySelectorAll('.modal-overlay').forEach(m => UI.closeModal(m.id));
             }
         });
 
-        // Performance Chart
-        const canvas = document.getElementById('performanceChart');
-        const ctx = canvas.getContext('2d');
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        const chartData = [
-            { label: "EXISTING SYSTEM", value: 68, color: "rgb(191, 201, 209)" },
-            { label: "OUR SOLUTION", value: 94, color: "rgb(79, 142, 255)" }
-        ];
-
-        let progress = 0;
-        function animateChart() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const barWidth = Math.min(canvas.width * 0.15, 80);
-            const spacing = canvas.width * 0.3;
-            const startX = (canvas.width - (barWidth * 2 + spacing)) / 2;
-            const floorY = canvas.height - 40;
-
-            chartData.forEach((bar, i) => {
-                const x = startX + i * (barWidth + spacing);
-                const targetHeight = (bar.value / 100) * (canvas.height - 100);
-                const currentHeight = targetHeight * progress;
-                const y = floorY - currentHeight;
-
-                if (i === 1) {
-                    ctx.shadowBlur = 20;
-                    ctx.shadowColor = 'rgba(79, 142, 255, 0.4)';
-                } else {
-                    ctx.shadowBlur = 0;
-                }
-
-                ctx.fillStyle = bar.color;
-                const radius = 12;
-                ctx.beginPath();
-                ctx.moveTo(x, floorY);
-                ctx.lineTo(x, y + radius);
-                ctx.quadraticCurveTo(x, y, x + radius, y);
-                ctx.lineTo(x + barWidth - radius, y);
-                ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + radius);
-                ctx.lineTo(x + barWidth, floorY);
-                ctx.closePath();
-                ctx.fill();
-
-                ctx.shadowBlur = 0;
-                ctx.fillStyle = "rgb(191, 201, 209)";
-                ctx.font = "bold 10px 'Plus Jakarta Sans'";
-                ctx.textAlign = "center";
-                ctx.fillText(bar.label, x + barWidth / 2, floorY + 25);
-            });
-
-            if (progress < 1) {
-                progress += 0.015;
-                requestAnimationFrame(animateChart);
-            }
-        }
-
-        window.onload = () => {
-            setTimeout(animateChart, 500);
-        };
+        window.onload = () => ChartManager.init();
     </script>
 </body>
 </html>
